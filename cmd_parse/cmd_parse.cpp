@@ -33,6 +33,7 @@ struct cmdline_options *cmdline_parser(int argc, char *argv[])
   struct cmdline_options *options = (struct cmdline_options *)calloc(sizeof(struct cmdline_options), 1);
   cmdline::parser a;
   a.add<string>("input-shape", 'i', "input shape", false, "");
+  a.add<int>("loop", 0, "loop times for benchmark", false, 1, cmdline::range(1, 65535));
   a.add("help", 0, "print this message");
   a.footer("bm input_file ...");
   a.set_program_name("hhb_runtime");
@@ -50,6 +51,7 @@ struct cmdline_options *cmdline_parser(int argc, char *argv[])
   }
 
   parse_input_shape(a.get<string>("input-shape"), options);
+  options->loop_time = a.get<int>("loop");
 
   options->rest_line_index = argc - a.rest().size();
 
